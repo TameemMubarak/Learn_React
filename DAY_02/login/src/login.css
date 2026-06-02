@@ -1,0 +1,170 @@
+/* ==========================================
+   HIGH-ENERGY TRAVEL COMPONENT STYLES
+   ========================================== */
+
+/* The Split Layout Card Framework Container */
+.login-container {
+  display: flex;
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 950px;
+  min-height: 580px;
+  border-radius: 24px;
+  overflow: hidden;
+  /* Glowing, energetic outer shadow instead of a dull dark one */
+  box-shadow: 0 20px 40px -15px rgba(245, 158, 11, 0.3);
+}
+
+/* Left Panel: Vibrant Sun-Drenched Travel Showcase Overlay */
+.app-showcase {
+  flex: 1.1;
+  /* Changed from gloomy charcoal to an enthusiastic, energetic golden sunset gradient */
+  background: linear-gradient(135deg, rgba(245, 233, 67, 0.2) 0%, rgba(240, 238, 238, 0.75) 100%), 
+              url('./assests/jrny2.jpg'); 
+  background-blend-mode: multiply; /* Enriches the golden yellow tones in your metro photo */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 50px;
+  color: #ffffff;
+  position: relative;
+}
+
+/* Energetic Tagline Accent */
+.tagline {
+  color: #faf7f7; /* Bright neon summer yellow */
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+/* Bold typography that screams movement and travel */
+.app-showcase h1 {
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Highlight the core word ("Journey") with a bright gradient that breaks out */
+.app-showcase h1:nth-child(3) {
+  background: linear-gradient(to right, #ffffff, #fef08a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.motive-text {
+  margin-top: 20px;
+  color: #ffedd5; /* Warm, inviting cream/orange tint text */
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 380px;
+  font-weight: 500;
+  text-shadow: 0 2px 8px rgba(120, 10, 10, 0.5); /* Deep red-brown shadow keeps text perfectly readable */
+}
+
+/* Right Form-Processing Area */
+.form-section {
+  flex: 0.9;
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffffff;
+}
+
+.form-section h2 {
+  color: #1e293b; 
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 35px;
+  letter-spacing: -0.5px;
+}
+
+/* Form Fields Configuration */
+.input-group {
+  margin-bottom: 24px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #4b5563;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #1e293b;
+  background-color: #f8fafc;
+  transition: all 0.2s ease;
+}
+
+/* Input focus glow shifts to match the vibrant warm travel accent colors */
+.input-group input:focus {
+  outline: none;
+  border-color: #f59e0b;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
+}
+
+/* High-Energy Dynamic Action Button */
+.login-btn {
+  width: 100%;
+  padding: 15px;
+  /* Bright, fast-forward sunset orange-to-red travel gradient */
+  background: linear-gradient(135deg, #ff8243 0%, #e23b3b 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 6px 15px rgba(226, 59, 59, 0.35);
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px); /* Moves up slightly higher on hover for an active feel */
+  box-shadow: 0 8px 25px rgba(226, 59, 59, 0.5);
+  filter: brightness(1.05);
+}
+
+.login-btn:active {
+  transform: translateY(1px);
+}
+
+.state-button{
+    cursor: pointer;
+    color: #0f0f0f;
+    text-decoration: underline;
+    font-size: 14px;
+}
+
+/* Responsive design view for mobile devices */
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+    max-width: 420px;
+  }
+  .app-showcase {
+    display: none; 
+  }
+  .form-section {
+    padding: 40px 30px;
+  }
+}

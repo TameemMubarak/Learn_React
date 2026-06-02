@@ -1,0 +1,20 @@
+/* ==========================================
+   GLOBAL RESETS & CANVAS CONFIGURATION 
+   ========================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Full-Screen Portal Background Canvas */
+.portal-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  /* Deep Charcoal Slate canvas - matches the top tunnel shadows of your photo */
+  background: linear-gradient(135deg, #d0e2e2 20%, #84ddd1 50%, #ebbc56 100%);
+  padding: 20px;
+}
