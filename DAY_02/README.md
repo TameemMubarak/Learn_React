@@ -1,4 +1,4 @@
-# 🚂 Journey Unbound - Full-Stack Authentication Portal
+# Journey Unbound - Full-Stack Authentication Portal
 
 A high-energy transit and travel showcase portal featuring a robust, secure authentication system built from scratch. This project demonstrates how to handle user authentication without heavy frameworks like Spring Boot or Node.js/Express, utilizing a pure Java backend and native web capabilities.
 
