@@ -25,22 +25,17 @@ function Login() {
     setRegMessage({ text: '', isError: false });
 
     try {
-      // WRITE Operation: Posts data to Database via Java Backend
-      // FORCE the payload into a clean JSON string for your pure Java backend
-const response = await axios.post(
-  'http://localhost:5000/api/register', 
-  JSON.stringify({ username: regUsername, password: regPassword }), 
-  {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
-);
+      // Clean request object map passed seamlessly to raw backend
+      const response = await axios.post(
+        'http://localhost:5000/api/register', 
+        { username: regUsername, password: regPassword }, 
+        { headers: { 'Content-Type': 'application/json' } }
+      );
 
       setRegMessage({ text: response.data.message || 'Registration successful! Please login.', isError: false });
       setRegUsername('');
       setRegPassword('');
-      setTimeout(() => setRegisteredUser(true), 2000); // Redirect to login panel
+      setTimeout(() => setRegisteredUser(true), 2000); 
     } catch (err) {
       setRegMessage({ text: err.response?.data?.error || 'Registration failed.', isError: true });
     }
@@ -52,12 +47,14 @@ const response = await axios.post(
     setUser(null);
   };
 
-  // If user state is found, skip login view entirely
   if (user) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', gap: '20px' }}>
         <h1>Welcome back, {user.username}! 🎉</h1>
-        <p>You have successfully logged in via pure endpoints.</p>
+        <p>You have successfully logged in via signed JSON Web Tokens (JWT).</p>
+        <div style={{ maxWidth: '400px', wordBreak: 'break-all', background: '#f1f5f9', padding: '10px', borderRadius: '8px', fontSize: '11px', color: '#64748b' }}>
+          <strong>Token Active: </strong> {user.token}
+        </div>
         <button onClick={handleLogout} className="login-btn" style={{ maxWidth: '200px' }}>Log Out</button>
       </div>
     );
@@ -89,7 +86,7 @@ const response = await axios.post(
           <div className="form-section">
             <h2>Create Account</h2>
             {regMessage.text && (
-              <p style={{ color: regMessage.isError ? '#ff4d4d' : '#4df0ff', fontSize: '14px', marginBottom: '10px' }}>
+              <p style={{ color: regMessage.isError ? '#ff4d4d' : '#22c55e', fontSize: '14px', marginBottom: '10px' }}>
                 {regMessage.text}
               </p>
             )}

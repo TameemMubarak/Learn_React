@@ -13,11 +13,16 @@ function LoginForm({ onSwitchView, onAuthSuccess }) {
     setError('');
 
     try {
-      // READ operation: sending parameters to Java server to read validation records
-      const response = await axios.post('http://localhost:5000/api/login', { username, password });
-      const userData = response.data; // Server returns { username: "...", token: "..." }
+      // Post request to Java Backend Server context
+      const response = await axios.post(
+        'http://localhost:5000/api/login', 
+        { username, password },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      
+      const userData = response.data; // Server returns { username: "...", token: "eyJhbG..." }
 
-      // WRITE operation to browser storages based on user preference
+      // Safe write operation based on client memory settings
       if (rememberMe) {
         localStorage.setItem('user', JSON.stringify(userData));
       } else {
@@ -59,20 +64,22 @@ function LoginForm({ onSwitchView, onAuthSuccess }) {
           />
         </div>
 
-        {/* LocalStorage / SessionStorage Choice Hook */}
-        <div className="input-group-checkbox" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
+        {/* Storage choice target */}
+        <div className="input-group-checkbox" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
           <input 
             type="checkbox" 
             id="rememberMe" 
             checked={rememberMe} 
             onChange={(e) => setRememberMe(e.target.checked)} 
           />
-          <label htmlFor="rememberMe" style={{ fontSize: '13px', cursor: 'pointer' }}>Keep me logged in (LocalStorage)</label>
+          <label htmlFor="rememberMe" style={{ fontSize: '13px', cursor: 'pointer', color: '#4b5563', fontWeight: '500' }}>
+            Keep me logged in (LocalStorage)
+          </label>
         </div>
 
         <button type="submit" className="login-btn">Start Exploring</button>
         
-        <p className="switch-text">
+        <p style={{ marginTop: '20px', fontSize: '14px', color: '#4b5563', textAlign: 'center' }}>
           Don't have an account?{' '}
           <button type="button" className="state-button" onClick={onSwitchView}>
             Register Now
