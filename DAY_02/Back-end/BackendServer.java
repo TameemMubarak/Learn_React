@@ -30,6 +30,7 @@ public class BackendServer {
 
         server.createContext("/api/login", new LoginHandler());
         server.createContext("/api/register", new RegisterHandler());
+        server.createContext("/api/mybookings",new MyBookingsHandler());
 
         server.setExecutor(null);
         System.out.println("Native Frameworkless Java API Server running on port 5000 with JWT...");
@@ -162,13 +163,173 @@ public class BackendServer {
         }
     }
 
-    // --- REUSABLE UTILITIES ---
-    private static void applyCorsHeaders(HttpExchange exchange) {
-        exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "http://localhost:3000");
-        exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
-        exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        exchange.getResponseHeaders().set("Access-Control-Allow-Credentials", "true");
+    static class MyBookingsHandler
+implements HttpHandler
+{
+    @Override
+    public void handle(HttpExchange exchange)
+    throws IOException
+    {
+        //applyCorsHeaders(exchange);
+          applyCorsHeaders(exchange);
+
+    if("OPTIONS".equalsIgnoreCase(
+        exchange.getRequestMethod()))
+    {
+        exchange.sendResponseHeaders(204,-1);
+        return;
     }
+        System.out.println("bookins list request.......");
+        if("GET".equalsIgnoreCase(
+            exchange.getRequestMethod()))
+        {
+            try
+            {
+                System.out.println(
+"Username Header: " +
+exchange.getRequestHeaders()
+        .getFirst("Username")
+);
+                String username =
+                exchange.getRequestHeaders()
+                        .getFirst("Username");
+
+                String json =
+                getBookings(username);
+                System.out.println("Bookings for "+username+": "+json);
+                sendResponse(
+                    exchange,
+                    200,
+                    json
+                );
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+
+                sendResponse(
+                    exchange,
+                    500,
+                    "{\"error\":\"Failed to load bookings\"}"
+                );
+            }
+        }
+    }
+
+    private String getBookings(
+        String username)
+    {
+        System.out.println("Fetching from db bookings lists;");
+        StringBuilder json =
+        new StringBuilder("[");
+
+        String sql =
+        """
+        SELECT *
+        FROM bookings
+        WHERE username = ?
+        """;
+
+        try
+        {
+            Connection conn =
+            DriverManager.getConnection(
+                DB_URL,
+                DB_USER,
+                DB_PASSWORD
+            );
+
+            PreparedStatement pstmt =
+            conn.prepareStatement(sql);
+
+            pstmt.setString(1, username);
+
+            ResultSet rs =
+            pstmt.executeQuery();
+
+            boolean first = true;
+
+            while(rs.next())
+            {
+                if(!first)
+                {
+                    json.append(",");
+                }
+
+                json.append("{")
+                    .append("\"bookingId\":")
+                    .append(rs.getInt("booking_id"))
+                    .append(",")
+
+                    .append("\"passengerName\":\"")
+                    .append(rs.getString("passenger_name"))
+                    .append("\",")
+
+                    .append("\"source\":\"")
+                    .append(rs.getString("source_station"))
+                    .append("\",")
+
+                    .append("\"destination\":\"")
+                    .append(rs.getString("destination_station"))
+                    .append("\",")
+
+                    .append("\"journeyDate\":\"")
+                    .append(rs.getDate("journey_date"))
+                    .append("\",")
+
+                    .append("\"seatNumber\":\"")
+                    .append(rs.getString("seat_number"))
+                    .append("\",")
+
+                    .append("\"fare\":")
+                    .append(rs.getDouble("fare"))
+                    .append(",")
+
+                    .append("\"status\":\"")
+                    .append(rs.getString("booking_status"))
+                    .append("\"")
+                    .append("}");
+
+                first = false;
+            }
+
+            json.append("]");
+
+            conn.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return json.toString();
+    }
+}
+    // --- REUSABLE UTILITIES ---
+    private static void applyCorsHeaders(
+    HttpExchange exchange)
+{
+    exchange.getResponseHeaders().set(
+        "Access-Control-Allow-Origin",
+        "*"
+    );
+
+    exchange.getResponseHeaders().set(
+        "Access-Control-Allow-Methods",
+        "GET, POST, OPTIONS"
+    );
+
+    exchange.getResponseHeaders().set(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization, Username"
+    );
+}
+    // private static void applyCorsHeaders(HttpExchange exchange) {
+    //     exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "http://localhost:3000");
+    //     exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+    //     exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    //     exchange.getResponseHeaders().set("Access-Control-Allow-Credentials", "true");
+    // }
 
     private static String readRequestBody(HttpExchange exchange) throws IOException {
         try (InputStream is = exchange.getRequestBody()) {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './login.css'; 
 import LoginForm from './LoginForm';
+import MyBookings from './MyBookings';
 
 function Login() {
   const [isRegisteredUser, setRegisteredUser] = useState(true);
@@ -47,18 +48,17 @@ function Login() {
     setUser(null);
   };
 
-  if (user) {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', gap: '20px' }}>
-        <h1>Welcome back, {user.username}! 🎉</h1>
-        <p>You have successfully logged in via signed JSON Web Tokens (JWT).</p>
-        <div style={{ maxWidth: '400px', wordBreak: 'break-all', background: '#f1f5f9', padding: '10px', borderRadius: '8px', fontSize: '11px', color: '#64748b' }}>
-          <strong>Token Active: </strong> {user.token}
-        </div>
-        <button onClick={handleLogout} className="login-btn" style={{ maxWidth: '200px' }}>Log Out</button>
-      </div>
-    );
-  }
+
+
+  if(user)
+{
+   return (
+      <MyBookings
+         user={user}
+         onLogout={handleLogout}
+      />
+   );
+}
 
   return (
     <div className="portal-wrapper">
